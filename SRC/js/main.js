@@ -5,7 +5,7 @@ let quill;
 
 function renderizarCampos() {
   const tipo = tipoSelect.value;
-  camposDiv.innerHTML = ''; // Limpa os campos existentes antes de renderizar
+  camposDiv.innerHTML = '';
 
   if (tipo === 'rapida') {
     camposDiv.innerHTML = `
@@ -52,7 +52,11 @@ function renderizarCampos() {
       <textarea id="orientacoes"></textarea>
     `;
   }
+
+
+  restaurarCampos();
 }
+
 
 function salvarCampos() {
   const tipo = tipoSelect.value;
@@ -76,12 +80,13 @@ function salvarCampos() {
   localStorage.setItem('evolucaoDados', JSON.stringify(dados));
 }
 
+
 function restaurarCampos() {
   const dadosSalvos = JSON.parse(localStorage.getItem('evolucaoDados'));
 
   if (dadosSalvos) {
     nomeInput.value = dadosSalvos.nome || '';
-    tipoSelect.value = dadosSalvos.tipo || 'rapida';
+    tipoSelect.value = dadosSalvos.tipo || 'completa';
 
     document.getElementById('queixa').value = dadosSalvos.queixa || '';
     document.getElementById('conduta').value = dadosSalvos.conduta || '';
@@ -100,7 +105,7 @@ function restaurarCampos() {
 
 function limparCampos() {
   nomeInput.value = '';
-  tipoSelect.value = 'rapida';
+  tipoSelect.value = 'completa';
   document.getElementById('queixa').value = '';
   document.getElementById('conduta').value = '';
   document.getElementById('exame').value = '';
@@ -117,84 +122,16 @@ function limparCampos() {
   localStorage.removeItem('evolucaoDados');
 }
 
+
 function salvarAutomaticamente() {
-  setInterval(salvarCampos, 5000); // Salva automaticamente a cada 5 segundos
-}
-
-function gerarTexto() {
-  const tipo = tipoSelect.value;
-  let texto = '';
-
-  if (tipo === 'rapida') {
-    texto = `Evolução Rápida:\n
-Queixa: ${document.getElementById('queixa').value}\n
-Conduta: ${document.getElementById('conduta').value}`;
-  } else {
-    texto = `Evolução Completa:\n
-Queixa Principal: ${document.getElementById('queixa').value}\n
-Exame Físico: ${document.getElementById('exame').value}\n
-Diagnóstico: ${document.getElementById('diagnostico').value}\n
-Prescrição: ${document.getElementById('prescricao').value}\n
-Posologia Detalhada:\n
-Medicamento: ${document.getElementById('medicamento').value}\n
-Dosagem: ${document.getElementById('dosagem').value}\n
-Frequência: ${document.getElementById('frequencia').value}\n
-Via de Administração: ${document.getElementById('via').value}\n
-Duração do Tratamento: ${document.getElementById('duracao').value}\n
-Observações: ${document.getElementById('observacoes').value}\n
-Orientações: ${document.getElementById('orientacoes').value}`;
-  }
-
-  quill.setText(texto);
-}
-
-function copiarTexto() {
-  navigator.clipboard.writeText(quill.getText()).then(() => {
-    alert("Texto copiado!");
-  });
-}
-
-function copiarTextoHtml() {
-  const textoComFormatacao = quill.root.innerHTML;
-  
-  navigator.clipboard.writeText(textoComFormatacao).then(() => {
-    alert("Texto copiado com formatação!");
-  });
-}
-
-function exportarTextoHtml() {
-  const nome = nomeInput.value.trim() || "paciente-nao-nomeado";
-  const agora = new Date();
-  const dataHora = agora.toLocaleString('pt-BR').replace(/[\/:]/g, '').replace(' ', '-');
-  const nomeArquivo = `${nome.replace(/\s+/g, '-')}-${dataHora}.html`;
-
-  const textoComFormatacao = quill.root.innerHTML;
-
-  const blob = new Blob([textoComFormatacao], { type: "text/html;charset=utf-8" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = nomeArquivo;
-  link.click();
-}
-
-function exportarTexto() {
-  const nome = nomeInput.value.trim() || "paciente-nao-nomeado";
-  const agora = new Date();
-  const dataHora = agora.toLocaleString('pt-BR').replace(/[\/:]/g, '').replace(' ', '-');
-  const nomeArquivo = `${nome.replace(/\s+/g, '-')}-${dataHora}.txt`;
-
-  const blob = new Blob([quill.getText()], { type: "text/plain;charset=utf-8" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = nomeArquivo;
-  link.click();
+  setInterval(salvarCampos, 2000);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   quill = new Quill('#editor', { theme: 'snow' });
   renderizarCampos();
-  restaurarCampos();
   salvarAutomaticamente();
 });
+
 
 tipoSelect.addEventListener('change', renderizarCampos);

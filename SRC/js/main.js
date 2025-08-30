@@ -77,19 +77,15 @@ function salvarCampos() {
     orientacoes: document.getElementById('orientacoes')?.value || ''
   };
 
-  localStorage.setItem(
-    tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta',
-    JSON.stringify(dados)
-  );
+  const chave = tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta';
+  localStorage.setItem(chave, JSON.stringify(dados));
 }
-
 
 
 function restaurarCampos() {
   const tipo = tipoSelect.value;
-  const dadosSalvos = JSON.parse(
-    localStorage.getItem(tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta')
-  );
+  const chave = tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta';
+  const dadosSalvos = JSON.parse(localStorage.getItem(chave));
 
   if (dadosSalvos) {
     nomeInput.value = dadosSalvos.nome || '';
@@ -113,7 +109,6 @@ function restaurarCampos() {
     setValue('orientacoes', dadosSalvos.orientacoes);
   }
 }
-
 
 
 function limparCampos() {
@@ -217,8 +212,9 @@ function exportarTexto() {
 document.addEventListener("DOMContentLoaded", () => {
   quill = new Quill('#editor', { theme: 'snow' });
   renderizarCampos();
-  salvarAutomaticamente();
+  salvarAutomaticamente(); // salva a cada 1.5s
 });
+
 
 
 tipoSelect.addEventListener('change', () => {

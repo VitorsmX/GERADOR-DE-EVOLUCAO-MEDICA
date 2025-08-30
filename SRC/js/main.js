@@ -7,7 +7,7 @@ function renderizarCampos() {
   const tipo = tipoSelect.value;
   camposDiv.innerHTML = ''; // Limpa os campos existentes antes de renderizar
 
-  if (tipo === 'rapida') {
+  if (tipo === 'completa') {
     camposDiv.innerHTML = `
       <label for="queixa">Queixa</label>
       <textarea id="queixa"></textarea>

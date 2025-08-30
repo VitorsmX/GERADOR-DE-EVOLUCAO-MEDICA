@@ -32,6 +32,11 @@ input, select, textarea, button {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
+  transition: all 0.2s ease-in-out;
+}
+
+input:hover, select:hover, textarea:hover {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 button {
@@ -40,14 +45,29 @@ button {
   color: white;
   border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.2s, transform 0.2s;
 }
 
 button:hover {
   background: #357ae8;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(1);
 }
 
 #editor {
   height: 200px;
   margin-top: 15px;
+  transition: box-shadow 0.2s ease;
+}
+
+#editor:hover {
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #4285f4;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }

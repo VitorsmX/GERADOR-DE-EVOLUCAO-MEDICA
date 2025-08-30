@@ -27,8 +27,12 @@
 
     <h2>Texto Gerado:</h2>
     <div id="editor"></div>
-    <button onclick="copiarTexto()">Copiar</button>
-    <button onclick="exportarTexto()">Exportar .txt</button>
+    <button onclick="copiarTexto()">Copiar Texto Sem Formatação</button>
+    <button onclick="copiarTextoHtml()">Copiar Texto Com Formatação</button>
+    <button onclick="exportarTexto()">Exportar sem formatação (.txt)</button>
+    <button onclick="exportarTextoHtml()">Exportar com formatação (.html)</button>
+
+    <button onclick="limparCampos()">Limpar Campos</button>
   </div>
 
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>

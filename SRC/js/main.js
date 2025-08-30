@@ -5,7 +5,7 @@ let quill;
 
 function renderizarCampos() {
   const tipo = tipoSelect.value;
-  camposDiv.innerHTML = '';
+  camposDiv.innerHTML = ''; // Limpa os campos existentes antes de renderizar
 
   if (tipo === 'rapida') {
     camposDiv.innerHTML = `
@@ -190,4 +190,11 @@ function exportarTexto() {
   link.click();
 }
 
-document.add
+document.addEventListener("DOMContentLoaded", () => {
+  quill = new Quill('#editor', { theme: 'snow' });
+  renderizarCampos();
+  restaurarCampos();
+  salvarAutomaticamente();
+});
+
+tipoSelect.addEventListener('change', renderizarCampos);

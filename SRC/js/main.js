@@ -3,6 +3,57 @@ const tipoSelect = document.getElementById('tipo');
 const nomeInput = document.getElementById('nome');
 let quill;
 
+function renderizarCampos() {
+  const tipo = tipoSelect.value;
+  camposDiv.innerHTML = ''; // Limpa os campos existentes antes de renderizar
+
+  if (tipo === 'rapida') {
+    camposDiv.innerHTML = `
+      <label for="queixa">Queixa</label>
+      <textarea id="queixa"></textarea>
+      <label for="conduta">Conduta</label>
+      <textarea id="conduta"></textarea>
+    `;
+  } else {
+    camposDiv.innerHTML = `
+      <label for="queixa">Queixa Principal</label>
+      <textarea id="queixa"></textarea>
+
+      <label for="exame">Exame Físico</label>
+      <textarea id="exame"></textarea>
+
+      <label for="diagnostico">Diagnóstico</label>
+      <textarea id="diagnostico"></textarea>
+
+      <label for="prescricao">Prescrição</label>
+      <textarea id="prescricao"></textarea>
+
+      <h3>Posologia Detalhada</h3>
+
+      <label for="medicamento">Medicamento</label>
+      <input type="text" id="medicamento">
+
+      <label for="dosagem">Dosagem</label>
+      <input type="text" id="dosagem">
+
+      <label for="frequencia">Frequência</label>
+      <input type="text" id="frequencia">
+
+      <label for="via">Via de Administração</label>
+      <input type="text" id="via">
+
+      <label for="duracao">Duração do Tratamento</label>
+      <input type="text" id="duracao">
+
+      <label for="observacoes">Observações</label>
+      <textarea id="observacoes"></textarea>
+
+      <label for="orientacoes">Orientações</label>
+      <textarea id="orientacoes"></textarea>
+    `;
+  }
+}
+
 function salvarCampos() {
   const tipo = tipoSelect.value;
   const dados = {
@@ -67,14 +118,14 @@ function limparCampos() {
 }
 
 function salvarAutomaticamente() {
-  setInterval(salvarCampos, 5000);
+  setInterval(salvarCampos, 5000); // Salva automaticamente a cada 5 segundos
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   quill = new Quill('#editor', { theme: 'snow' });
-  renderizarCampos();
-  restaurarCampos();
-  salvarAutomaticamente();
+  renderizarCampos(); // Renderiza os campos no carregamento
+  restaurarCampos(); // Restaura os campos com base no localStorage
+  salvarAutomaticamente(); // Inicia o salvamento automático
 });
 
-tipoSelect.addEventListener('change', renderizarCampos);
+tipoSelect.addEventListener('change', renderizarCampos); // Atualiza os campos ao mudar o tipo

@@ -134,27 +134,32 @@ function gerarTexto() {
   let texto = '';
 
   if (tipo === 'rapida') {
-    texto = `Evolução Rápida:\n
-Queixa: ${document.getElementById('queixa').value}\n
-Conduta: ${document.getElementById('conduta').value}`;
+    texto = `=== Evolução Rápida ===\n
+📌 Resumo
+- Queixa: ${document.getElementById('queixa').value || '-'}
+- Conduta: ${document.getElementById('conduta').value || '-'}`;
   } else {
-    texto = `Evolução Completa:\n
-Queixa Principal: ${document.getElementById('queixa').value}\n
-Exame Físico: ${document.getElementById('exame').value}\n
-Diagnóstico: ${document.getElementById('diagnostico').value}\n
-Prescrição: ${document.getElementById('prescricao').value}\n
-Posologia Detalhada:\n
-Medicamento: ${document.getElementById('medicamento').value}\n
-Dosagem: ${document.getElementById('dosagem').value}\n
-Frequência: ${document.getElementById('frequencia').value}\n
-Via de Administração: ${document.getElementById('via').value}\n
-Duração do Tratamento: ${document.getElementById('duracao').value}\n
-Observações: ${document.getElementById('observacoes').value}\n
-Orientações: ${document.getElementById('orientacoes').value}`;
+    texto = `=== Evolução Completa ===\n
+📌 Dados Clínicos
+- Queixa Principal: ${document.getElementById('queixa').value || '-'}
+- Exame Físico: ${document.getElementById('exame').value || '-'}
+- Diagnóstico: ${document.getElementById('diagnostico').value || '-'}\n
+💊 Tratamento
+- Prescrição: ${document.getElementById('prescricao').value || '-'}\n
+🧾 Posologia Detalhada
+- Medicamento: ${document.getElementById('medicamento').value || '-'}
+- Dosagem: ${document.getElementById('dosagem').value || '-'}
+- Frequência: ${document.getElementById('frequencia').value || '-'}
+- Via: ${document.getElementById('via').value || '-'}
+- Duração: ${document.getElementById('duracao').value || '-'}\n
+📝 Complementos
+- Observações: ${document.getElementById('observacoes').value || '-'}
+- Orientações: ${document.getElementById('orientacoes').value || '-'}`;
   }
 
   quill.setText(texto);
 }
+
 
 function copiarTexto() {
   navigator.clipboard.writeText(quill.getText()).then(() => {
@@ -184,6 +189,46 @@ function exportarTextoHtml() {
   link.download = nomeArquivo;
   link.click();
 }
+
+function exportarPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const conteudo = quill.getText();
+  const tipo = document.getElementById("tipo").value || "Evolução";
+  const nome = document.getElementById("nome").value || "Paciente";
+
+  const agora = new Date();
+  const dia = String(agora.getDate()).padStart(2, "0");
+  const mes = String(agora.getMonth() + 1).padStart(2, "0");
+  const ano = agora.getFullYear();
+  const hora = String(agora.getHours()).padStart(2, "0");
+  const minuto = String(agora.getMinutes()).padStart(2, "0");
+  const segundo = String(agora.getSeconds()).padStart(2, "0");
+
+  const dataHora = `${dia}-${mes}-${ano}_${hora}-${minuto}-${segundo}`;
+
+  const titulo = `${tipo} de ${nome}`;
+
+  doc.setFont("times", "normal");
+
+  doc.setFontSize(16);
+  doc.text(titulo, 105, 20, { align: "center" });
+
+  doc.setFontSize(10);
+  doc.text(`Data de geração: ${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`, 105, 28, { align: "center" });
+
+  doc.setFontSize(12);
+  const marginLeft = 15;
+  const marginTop = 40;
+  const maxWidth = 180;
+  const linhas = doc.splitTextToSize(conteudo, maxWidth);
+  doc.text(linhas, marginLeft, marginTop);
+
+  doc.save(`${tipo}_${nome}_${dataHora}.pdf`);
+}
+
+
 
 function exportarTexto() {
   const nome = nomeInput.value.trim() || "paciente-nao-nomeado";

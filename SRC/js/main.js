@@ -122,6 +122,26 @@ function restaurarCampos() {
   }
 }
 
+document.querySelector(".limpar-btn").addEventListener("click", () => {
+  mostrarConfirmModal();
+});
+
+function mostrarConfirmModal() {
+  const modal = document.getElementById("confirm-modal");
+  modal.style.display = "flex";
+
+  // Cancelar
+  document.getElementById("confirm-no").onclick = () => {
+    modal.style.display = "none";
+  };
+
+  // Confirmar
+  document.getElementById("confirm-yes").onclick = () => {
+    modal.style.display = "none";
+    limparCampos();
+  };
+}
+
 function limparCampos() {
   nomeInput.value = '';
   tipoSelect.value = 'completa';
@@ -141,8 +161,9 @@ function limparCampos() {
   localStorage.removeItem('evolucaoCompleta');
 
   renderizarCampos();
-  showToast("Todos os campos foram limpos!", "warning");
+  showToast("Todos os campos foram limpos!", "warning", true);
 }
+
 
 function salvarAutomaticamente() {
   setInterval(salvarCampos, 1500); 

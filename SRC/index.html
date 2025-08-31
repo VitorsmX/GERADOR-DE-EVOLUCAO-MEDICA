@@ -25,7 +25,7 @@
 
       <div class="button-group">
         <button type="button" id="gerar-btn" onclick="gerarTexto()">Gerar Evolução</button>
-        <button type="button" class="limpar-btn" onclick="limparCampos()">Limpar Campos</button>
+        <button type="button" class="limpar-btn">Limpar Campos</button>
       </div>
     </form>
 
@@ -53,6 +53,18 @@
   </div>
 
   <div id="toast-container"></div>
+
+<div id="confirm-modal" class="modal">
+  <div class="modal-content">
+    <h3>Confirmação</h3>
+    <p>Você tem certeza que deseja limpar todos os campos? Essa ação não pode ser desfeita.</p>
+    <div class="button-group">
+      <button id="confirm-yes">Sim, limpar</button>
+      <button id="confirm-no">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

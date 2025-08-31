@@ -167,10 +167,13 @@ function copiarTexto() {
   });
 }
 
-function copiarTextoHtml() {
-  const textoComFormatacao = quill.root.innerHTML;
-  
-  navigator.clipboard.writeText(textoComFormatacao).then(() => {
+function copiarTextoMarkdown() {
+  const textoHtml = quill.root.innerHTML;
+
+  const turndownService = new TurndownService();
+  const textoMarkdown = turndownService.turndown(textoHtml);
+
+  navigator.clipboard.writeText(textoMarkdown).then(() => {
     alert("Texto copiado com formatação!");
   });
 }
@@ -227,8 +230,6 @@ function exportarPDF() {
 
   doc.save(`${tipo}_${nome}_${dataHora}.pdf`);
 }
-
-
 
 function exportarTexto() {
   const nome = nomeInput.value.trim() || "paciente-nao-nomeado";

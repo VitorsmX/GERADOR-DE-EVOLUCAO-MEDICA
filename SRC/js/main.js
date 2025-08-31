@@ -3,6 +3,26 @@ const tipoSelect = document.getElementById('tipo');
 const nomeInput = document.getElementById('nome');
 let quill;
 
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+
+  const toast = document.createElement("div");
+  toast.classList.add("toast");
+
+  // Cores por tipo
+  if (type === "success") toast.style.background = "#28a745";
+  if (type === "error") toast.style.background = "#dc3545";
+  if (type === "warning") toast.style.background = "#ffc107";
+  if (type === "info") toast.style.background = "#17a2b8";
+
+  toast.textContent = message;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 2500);
+}
+
 function renderizarCampos() {
   const tipo = tipoSelect.value;
   camposDiv.innerHTML = '';
@@ -79,7 +99,6 @@ function salvarCampos() {
 
   const dados = { nome: nomeInput.value.trim() };
 
-  // salva apenas os campos visíveis no DOM atual
   camposDiv.querySelectorAll("input, textarea").forEach(el => {
     dados[el.id] = el.value;
   });
@@ -123,6 +142,7 @@ function limparCampos() {
   localStorage.removeItem('evolucaoCompleta');
 
   renderizarCampos();
+  showToast("Todos os campos foram limpos!", "warning");
 }
 
 function salvarAutomaticamente() {
@@ -163,34 +183,22 @@ function gerarTexto() {
 
 function copiarTexto() {
   navigator.clipboard.writeText(quill.getText()).then(() => {
-    alert("Texto copiado!");
+    showToast("Texto copiado para a área de transferência!", "success");
+  }).catch(() => {
+    showToast("Erro ao copiar o texto!", "error");
   });
 }
 
 function copiarTextoMarkdown() {
   const textoHtml = quill.root.innerHTML;
-
   const turndownService = new TurndownService();
   const textoMarkdown = turndownService.turndown(textoHtml);
 
   navigator.clipboard.writeText(textoMarkdown).then(() => {
-    alert("Texto copiado com formatação!");
+    showToast("Texto copiado em Markdown!", "success");
+  }).catch(() => {
+    showToast("Erro ao copiar o texto!", "error");
   });
-}
-
-function exportarTextoHtml() {
-  const nome = nomeInput.value.trim() || "paciente-nao-nomeado";
-  const agora = new Date();
-  const dataHora = agora.toLocaleString('pt-BR').replace(/[\/:]/g, '').replace(' ', '-');
-  const nomeArquivo = `${nome.replace(/\s+/g, '-')}-${dataHora}.html`;
-
-  const textoComFormatacao = quill.root.innerHTML;
-
-  const blob = new Blob([textoComFormatacao], { type: "text/html;charset=utf-8" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = nomeArquivo;
-  link.click();
 }
 
 function exportarPDF() {
@@ -210,7 +218,6 @@ function exportarPDF() {
   const segundo = String(agora.getSeconds()).padStart(2, "0");
 
   const dataHora = `${dia}-${mes}-${ano}_${hora}-${minuto}-${segundo}`;
-
   const titulo = `${tipo} de ${nome}`;
 
   doc.setFont("times", "normal");
@@ -229,6 +236,8 @@ function exportarPDF() {
   doc.text(linhas, marginLeft, marginTop);
 
   doc.save(`${tipo}_${nome}_${dataHora}.pdf`);
+
+  showToast("PDF exportado com sucesso!", "success");
 }
 
 function exportarTexto() {
@@ -242,6 +251,8 @@ function exportarTexto() {
   link.href = URL.createObjectURL(blob);
   link.download = nomeArquivo;
   link.click();
+
+  showToast("Arquivo TXT exportado com sucesso!", "success");
 }
 
 document.addEventListener("DOMContentLoaded", () => {

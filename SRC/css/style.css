@@ -35,6 +35,13 @@ input, select, textarea, button {
   transition: all 0.2s ease-in-out;
 }
 
+.limpar-btn {
+  background-color: #c21f1f;
+  &:hover {
+    background-color: #cc1616;
+  }
+}
+
 input:hover, select:hover, textarea:hover {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
@@ -104,5 +111,43 @@ button {
 @media (max-width: 600px) {
   .grid-posologia {
     grid-template-columns: 1fr;
+  }
+}
+
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Estilo do toast */
+.toast {
+  background: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideIn 0.4s forwards, fadeOut 0.4s forwards 2.45s;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+/* Animações */
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
   }
 }

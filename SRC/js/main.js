@@ -161,7 +161,7 @@ function limparCampos() {
   localStorage.removeItem('evolucaoCompleta');
 
   renderizarCampos();
-  showToast("Todos os campos foram limpos!", "warning", true);
+  showToast("Todos os campos foram limpos!", "warning", 2500);
 }
 
 

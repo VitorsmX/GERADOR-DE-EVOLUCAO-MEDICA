@@ -34,7 +34,35 @@ body.loaded .spinner {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.border-shadow {
+  border: #0000002a solid 1px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 15px;
+  &:hover {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+}
+
+.container-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 15%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .container-flex {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 h1, h2 {

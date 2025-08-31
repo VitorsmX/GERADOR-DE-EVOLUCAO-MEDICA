@@ -22,7 +22,7 @@
     </div>
 
     <!-- Conteúdo Real -->
-    <div class="container page-content" style="display:none;">
+    <div class="container page-content" style="display: none">
       <h1>Gerador de Evolução Médica</h1>
 
       <form id="evolucaoForm">
@@ -46,9 +46,7 @@
           <button type="button" id="gerar-btn" onclick="gerarTexto()">
             Gerar Evolução
           </button>
-          <button type="button" class="limpar-btn">
-            Limpar Campos
-          </button>
+          <button type="button" class="limpar-btn">Limpar Campos</button>
         </div>
       </form>
 
@@ -57,20 +55,22 @@
         <div id="editor"></div>
       </div>
 
-      <div class="section">
-        <h3>Copiar Texto</h3>
-        <div class="button-group">
-          <button onclick="copiarTexto()">Sem Formatação</button>
-          <button onclick="copiarTextoMarkdown()">Com Formatação</button>
+      <div class="container-flex">
+        <div class="section border-shadow">
+          <h3 class="text-center">Copiar Texto</h3>
+          <div class="button-group">
+            <button onclick="copiarTexto()">Sem Formatação</button>
+            <button onclick="copiarTextoMarkdown()">Com Formatação</button>
+          </div>
         </div>
-      </div>
 
-      <div class="section">
-        <h3>Exportar Arquivo</h3>
-        <div class="button-group">
-          <button onclick="exportarTexto()">Exportar (.txt)</button>
-          <button onclick="exportarTextoHtml()">Exportar (.html)</button>
-          <button onclick="exportarPDF()">Exportar PDF</button>
+        <div class="section border-shadow">
+          <h3 class="text-center">Exportar Arquivo</h3>
+          <div class="button-group">
+            <button onclick="exportarTexto()">Exportar (.txt)</button>
+            <button onclick="exportarTextoHtml()">Exportar (.html)</button>
+            <button onclick="exportarPDF()">Exportar PDF</button>
+          </div>
         </div>
       </div>
     </div>

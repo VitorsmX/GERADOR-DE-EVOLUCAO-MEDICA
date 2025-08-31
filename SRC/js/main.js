@@ -9,7 +9,6 @@ function showToast(message, type = "info") {
   const toast = document.createElement("div");
   toast.classList.add("toast");
 
-  // Cores por tipo
   if (type === "success") toast.style.background = "#28a745";
   if (type === "error") toast.style.background = "#dc3545";
   if (type === "warning") toast.style.background = "#ffc107";
@@ -178,7 +177,21 @@ function gerarTexto() {
   }
 
   quill.setText(texto);
+
+  if (texto.length > 0) {
+    showToast("Evolução gerada com sucesso!", "success");
+
+    if (quill && quill.root) {
+      quill.focus();
+  
+      quill.root.scrollIntoView({ behavior: "smooth", block: "center" });
+  
+      quill.root.classList.add("focused");
+      setTimeout(() => quill.root.classList.remove("focused"), 1500);
+    }
+  }
 }
+
 
 
 function copiarTexto() {

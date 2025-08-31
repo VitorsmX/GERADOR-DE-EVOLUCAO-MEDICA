@@ -3,7 +3,7 @@ const tipoSelect = document.getElementById('tipo');
 const nomeInput = document.getElementById('nome');
 let quill;
 
-function showToast(message, type = "info") {
+function showToast(message, type = "info", showTimeMS = 2500) {
   const container = document.getElementById("toast-container");
 
   const toast = document.createElement("div");
@@ -19,7 +19,7 @@ function showToast(message, type = "info") {
 
   setTimeout(() => {
     toast.remove();
-  }, 2500);
+  }, showTimeMS);
 }
 
 function renderizarCampos() {
@@ -166,7 +166,13 @@ function limparCampos() {
 
 
 function salvarAutomaticamente() {
-  setInterval(salvarCampos, 1500); 
+  document.addEventListener("input", (e) => {
+    if (e.target.matches("input, textarea, select")) {
+      salvarCampos();
+    }
+  });
+
+  setInterval(salvarCampos, 20000);
 }
 
 function gerarTexto() {
@@ -200,7 +206,7 @@ function gerarTexto() {
   quill.setText(texto);
 
   if (texto.length > 0) {
-    showToast("Evolução gerada com sucesso!", "success");
+    showToast("Evolução gerada com sucesso!", "success", 4000);
 
     if (quill && quill.root) {
       quill.focus();
@@ -208,12 +214,10 @@ function gerarTexto() {
       quill.root.scrollIntoView({ behavior: "smooth", block: "center" });
   
       quill.root.classList.add("focused");
-      setTimeout(() => quill.root.classList.remove("focused"), 1500);
+      setTimeout(() => quill.root.classList.remove("focused"), 2500);
     }
   }
 }
-
-
 
 function copiarTexto() {
   navigator.clipboard.writeText(quill.getText()).then(() => {
@@ -293,9 +297,20 @@ document.addEventListener("DOMContentLoaded", () => {
   quill = new Quill('#editor', { theme: 'snow' });
   renderizarCampos();
   salvarAutomaticamente();
+
+  window.onload = () => {
+    const loader = document.getElementById("loading-overlay");
+    if (loader) {
+      loader.classList.add("fade-out");
+      setTimeout(() => loader.remove(), 700);
+    }
+  };
+
+  document.querySelectorAll(".skeleton-container").forEach(el => el.remove());
 });
 
 tipoSelect.addEventListener('change', () => {
-  salvarCampos();       
+  salvarCampos();
+  restaurarCampos();       
   renderizarCampos();   
 });

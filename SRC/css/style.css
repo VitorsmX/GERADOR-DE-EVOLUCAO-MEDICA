@@ -199,3 +199,96 @@ button {
     transform: translateY(-20px);
   }
 }
+
+/* Overlay de loading */
+#loading-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 16px;
+  transition: opacity 0.5s ease;
+}
+
+#loading-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Spinner elegante */
+.spinner {
+  border: 6px solid rgba(255,255,255,0.2);
+  border-top: 6px solid #4285f4;
+  border-radius: 50%;
+  width: 60px; height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Skeleton Loader ===== */
+.skeleton {
+  position: relative;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -150px;
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Skeletons específicos */
+.skeleton-text {
+  height: 16px;
+  margin: 6px 0;
+}
+
+.skeleton-title {
+  height: 28px;
+  width: 60%;
+  margin: 10px 0;
+}
+
+.skeleton-input {
+  height: 40px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.skeleton-textarea {
+  height: 80px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.skeleton-button {
+  height: 40px;
+  width: 120px;
+  margin: 10px 5px 0 0;
+  display: inline-block;
+}
+

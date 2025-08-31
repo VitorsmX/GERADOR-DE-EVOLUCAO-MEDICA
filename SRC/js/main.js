@@ -3,57 +3,71 @@ const tipoSelect = document.getElementById('tipo');
 const nomeInput = document.getElementById('nome');
 let quill;
 
-
 function renderizarCampos() {
   const tipo = tipoSelect.value;
   camposDiv.innerHTML = '';
 
   if (tipo === 'rapida') {
     camposDiv.innerHTML = `
+      <h3>Resumo da Evolução</h3>
       <label for="queixa">Queixa</label>
-      <textarea id="queixa"></textarea>
+      <textarea id="queixa" placeholder="Descreva a queixa do paciente..."></textarea>
+
       <label for="conduta">Conduta</label>
-      <textarea id="conduta"></textarea>
+      <textarea id="conduta" placeholder="Conduta médica a ser adotada..."></textarea>
     `;
   } else {
     camposDiv.innerHTML = `
+      <h3>Dados Clínicos</h3>
       <label for="queixa">Queixa Principal</label>
-      <textarea id="queixa"></textarea>
+      <textarea id="queixa" placeholder="Descreva a queixa principal..."></textarea>
 
       <label for="exame">Exame Físico</label>
-      <textarea id="exame"></textarea>
+      <textarea id="exame" placeholder="Detalhes do exame físico..."></textarea>
 
       <label for="diagnostico">Diagnóstico</label>
-      <textarea id="diagnostico"></textarea>
+      <textarea id="diagnostico" placeholder="Hipótese diagnóstica..."></textarea>
 
+      <h3>Tratamento</h3>
       <label for="prescricao">Prescrição</label>
-      <textarea id="prescricao"></textarea>
+      <textarea id="prescricao" placeholder="Prescrição médica..."></textarea>
 
       <h3>Posologia Detalhada</h3>
+      <div class="grid-posologia">
+        <div>
+          <label for="medicamento">Medicamento</label>
+          <input type="text" id="medicamento" placeholder="Nome do medicamento">
+        </div>
 
-      <label for="medicamento">Medicamento</label>
-      <input type="text" id="medicamento">
+        <div>
+          <label for="dosagem">Dosagem</label>
+          <input type="text" id="dosagem" placeholder="Ex: 500mg">
+        </div>
 
-      <label for="dosagem">Dosagem</label>
-      <input type="text" id="dosagem">
+        <div>
+          <label for="frequencia">Frequência</label>
+          <input type="text" id="frequencia" placeholder="Ex: 2x ao dia">
+        </div>
 
-      <label for="frequencia">Frequência</label>
-      <input type="text" id="frequencia">
+        <div>
+          <label for="via">Via de Administração</label>
+          <input type="text" id="via" placeholder="Ex: Oral, EV...">
+        </div>
 
-      <label for="via">Via de Administração</label>
-      <input type="text" id="via">
+        <div>
+          <label for="duracao">Duração</label>
+          <input type="text" id="duracao" placeholder="Ex: 7 dias">
+        </div>
+      </div>
 
-      <label for="duracao">Duração do Tratamento</label>
-      <input type="text" id="duracao">
-
+      <h3>Complementos</h3>
       <label for="observacoes">Observações</label>
-      <textarea id="observacoes"></textarea>
+      <textarea id="observacoes" placeholder="Observações adicionais..."></textarea>
 
       <label for="orientacoes">Orientações</label>
-      <textarea id="orientacoes"></textarea>
+      <textarea id="orientacoes" placeholder="Orientações ao paciente..."></textarea>
     `;
   }
-
 
   restaurarCampos();
 }
@@ -61,26 +75,17 @@ function renderizarCampos() {
 
 function salvarCampos() {
   const tipo = tipoSelect.value;
-  const dados = {
-    nome: nomeInput.value.trim(),
-    queixa: document.getElementById('queixa')?.value || '',
-    conduta: document.getElementById('conduta')?.value || '',
-    exame: document.getElementById('exame')?.value || '',
-    diagnostico: document.getElementById('diagnostico')?.value || '',
-    prescricao: document.getElementById('prescricao')?.value || '',
-    medicamento: document.getElementById('medicamento')?.value || '',
-    dosagem: document.getElementById('dosagem')?.value || '',
-    frequencia: document.getElementById('frequencia')?.value || '',
-    via: document.getElementById('via')?.value || '',
-    duracao: document.getElementById('duracao')?.value || '',
-    observacoes: document.getElementById('observacoes')?.value || '',
-    orientacoes: document.getElementById('orientacoes')?.value || ''
-  };
-
   const chave = tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta';
+
+  const dados = { nome: nomeInput.value.trim() };
+
+  // salva apenas os campos visíveis no DOM atual
+  camposDiv.querySelectorAll("input, textarea").forEach(el => {
+    dados[el.id] = el.value;
+  });
+
   localStorage.setItem(chave, JSON.stringify(dados));
 }
-
 
 function restaurarCampos() {
   const tipo = tipoSelect.value;
@@ -90,26 +95,14 @@ function restaurarCampos() {
   if (dadosSalvos) {
     nomeInput.value = dadosSalvos.nome || '';
 
-    const setValue = (id, valor) => {
-      const el = document.getElementById(id);
-      if (el) el.value = valor || '';
-    };
-
-    setValue('queixa', dadosSalvos.queixa);
-    setValue('conduta', dadosSalvos.conduta);
-    setValue('exame', dadosSalvos.exame);
-    setValue('diagnostico', dadosSalvos.diagnostico);
-    setValue('prescricao', dadosSalvos.prescricao);
-    setValue('medicamento', dadosSalvos.medicamento);
-    setValue('dosagem', dadosSalvos.dosagem);
-    setValue('frequencia', dadosSalvos.frequencia);
-    setValue('via', dadosSalvos.via);
-    setValue('duracao', dadosSalvos.duracao);
-    setValue('observacoes', dadosSalvos.observacoes);
-    setValue('orientacoes', dadosSalvos.orientacoes);
+    for (const [id, valor] of Object.entries(dadosSalvos)) {
+      if (id !== "nome") {
+        const el = document.getElementById(id);
+        if (el) el.value = valor || '';
+      }
+    }
   }
 }
-
 
 function limparCampos() {
   nomeInput.value = '';
@@ -128,13 +121,13 @@ function limparCampos() {
 
   localStorage.removeItem('evolucaoRapida');
   localStorage.removeItem('evolucaoCompleta');
-}
 
+  renderizarCampos();
+}
 
 function salvarAutomaticamente() {
   setInterval(salvarCampos, 1500); 
 }
-
 
 function gerarTexto() {
   const tipo = tipoSelect.value;
@@ -169,7 +162,6 @@ function copiarTexto() {
   });
 }
 
-
 function copiarTextoHtml() {
   const textoComFormatacao = quill.root.innerHTML;
   
@@ -177,7 +169,6 @@ function copiarTextoHtml() {
     alert("Texto copiado com formatação!");
   });
 }
-
 
 function exportarTextoHtml() {
   const nome = nomeInput.value.trim() || "paciente-nao-nomeado";
@@ -194,7 +185,6 @@ function exportarTextoHtml() {
   link.click();
 }
 
-
 function exportarTexto() {
   const nome = nomeInput.value.trim() || "paciente-nao-nomeado";
   const agora = new Date();
@@ -208,17 +198,13 @@ function exportarTexto() {
   link.click();
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
   quill = new Quill('#editor', { theme: 'snow' });
   renderizarCampos();
-  salvarAutomaticamente(); // salva a cada 1.5s
+  salvarAutomaticamente();
 });
-
-
 
 tipoSelect.addEventListener('change', () => {
   salvarCampos();       
   renderizarCampos();   
 });
-

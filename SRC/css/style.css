@@ -50,7 +50,7 @@ button {
 
 button:hover {
   background: #357ae8;
-  transform: scale(1.05);
+  transform: scale(1.01);
 }
 
 button:active {
@@ -70,4 +70,39 @@ button:active {
 input:focus, select:focus, textarea:focus {
   border-color: #4285f4;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.section {
+  margin-top: 30px;
+}
+.section h3 {
+  margin-bottom: 10px;
+}
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.grid-posologia {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.grid-posologia div {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 600px) {
+  .grid-posologia {
+    grid-template-columns: 1fr;
+  }
 }

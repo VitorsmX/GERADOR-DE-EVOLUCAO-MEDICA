@@ -306,8 +306,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  document.querySelectorAll(".skeleton-container").forEach(el => el.remove());
+  window.addEventListener("load", () => {
+    document.getElementById("skeleton-overlay").style.display = "none"; 
+    document.querySelector(".page-content").style.display = "block"; 
+  });
+  
 });
+
 
 tipoSelect.addEventListener('change', () => {
   salvarCampos();

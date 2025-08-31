@@ -9,6 +9,25 @@ body {
   padding: 0;
 }
 
+body.loading .page-content {
+  display: none;
+}
+
+body.loaded .page-content {
+  display: block;
+}
+
+body.loading .skeleton,
+body.loading .spinner {
+  display: flex;
+}
+
+body.loaded .skeleton,
+body.loaded .spinner {
+  display: none;
+}
+
+
 .container {
   max-width: 800px;
   margin: 40px auto;
@@ -208,7 +227,7 @@ button {
 }
 @keyframes fadeOut {
   to {
-    opacity: 0;
+    opacity: 0.5;
     transform: translateY(-20px);
   }
 }

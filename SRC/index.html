@@ -11,21 +11,31 @@
     />
   </head>
   <body>
-    <div class="container skeleton-container">
-      <h1 class="skeleton skeleton-title">Gerador de Evolução Médica</h1>
+    <!-- Overlay do Skeleton -->
+    <div id="skeleton-overlay">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-input"></div>
+      <div class="skeleton skeleton-input"></div>
+      <div class="skeleton skeleton-button"></div>
+      <div class="skeleton skeleton-textarea"></div>
+      <div class="skeleton skeleton-button"></div>
+    </div>
+
+    <!-- Conteúdo Real -->
+    <div class="container page-content" style="display:none;">
+      <h1>Gerador de Evolução Médica</h1>
 
       <form id="evolucaoForm">
-        <label for="nome" class="skeleton skeleton-text">Nome do Paciente</label>
+        <label for="nome">Nome do Paciente</label>
         <input
           type="text"
           id="nome"
           name="nome"
           placeholder="Digite o nome do paciente"
-          class="skeleton skeleton-input"
         />
 
-        <label for="tipo" class="skeleton skeleton-text">Tipo de Evolução</label>
-        <select id="tipo" name="tipo" class="skeleton skeleton-input">
+        <label for="tipo">Tipo de Evolução</label>
+        <select id="tipo" name="tipo">
           <option value="rapida">Rápida</option>
           <option value="completa">Completa</option>
         </select>
@@ -33,49 +43,34 @@
         <div id="campos"></div>
 
         <div class="button-group">
-          <button
-            type="button"
-            id="gerar-btn"
-            onclick="gerarTexto()"
-            class="skeleton skeleton-button"
-          >
+          <button type="button" id="gerar-btn" onclick="gerarTexto()">
             Gerar Evolução
           </button>
-          <button type="button" class="limpar-btn skeleton skeleton-button">
+          <button type="button" class="limpar-btn">
             Limpar Campos
           </button>
         </div>
       </form>
 
       <div class="section">
-        <h2 class="skeleton skeleton-title">Texto Gerado:</h2>
-        <div id="editor" class="skeleton skeleton-textarea"></div>
+        <h2>Texto Gerado:</h2>
+        <div id="editor"></div>
       </div>
 
       <div class="section">
-        <h3 class="skeleton skeleton-text">Copiar Texto</h3>
+        <h3>Copiar Texto</h3>
         <div class="button-group">
-          <button class="skeleton skeleton-button" onclick="copiarTexto()">
-            Sem Formatação
-          </button>
-          <button class="skeleton skeleton-button" onclick="copiarTextoMarkdown()">
-            Com Formatação
-          </button>
+          <button onclick="copiarTexto()">Sem Formatação</button>
+          <button onclick="copiarTextoMarkdown()">Com Formatação</button>
         </div>
       </div>
 
       <div class="section">
-        <h3 class="skeleton skeleton-text">Exportar Arquivo</h3>
+        <h3>Exportar Arquivo</h3>
         <div class="button-group">
-          <button class="skeleton skeleton-button" onclick="exportarTexto()">
-            Exportar (.txt)
-          </button>
-          <button class="skeleton skeleton-button" onclick="exportarTextoHtml()">
-            Exportar (.html)
-          </button>
-          <button class="skeleton skeleton-button" onclick="exportarPDF()">
-            Exportar PDF
-          </button>
+          <button onclick="exportarTexto()">Exportar (.txt)</button>
+          <button onclick="exportarTextoHtml()">Exportar (.html)</button>
+          <button onclick="exportarPDF()">Exportar PDF</button>
         </div>
       </div>
     </div>

@@ -110,6 +110,9 @@ function restaurarCampos() {
   const chave = tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta';
   const dadosSalvos = JSON.parse(localStorage.getItem(chave));
 
+  nomeInput.value = '';
+  camposDiv.querySelectorAll("input, textarea").forEach(el => el.value = '');
+
   if (dadosSalvos) {
     nomeInput.value = dadosSalvos.nome || '';
 
@@ -143,25 +146,16 @@ function mostrarConfirmModal() {
 }
 
 function limparCampos() {
+  const tipo = tipoSelect.value;
+  const chave = tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta';
+
   nomeInput.value = '';
-  tipoSelect.value = 'completa';
-
-  const limpar = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  };
-
-  [
-    'queixa', 'conduta', 'exame', 'diagnostico', 'prescricao',
-    'medicamento', 'dosagem', 'frequencia', 'via', 'duracao',
-    'observacoes', 'orientacoes'
-  ].forEach(limpar);
-
-  localStorage.removeItem('evolucaoRapida');
-  localStorage.removeItem('evolucaoCompleta');
+  camposDiv.querySelectorAll("input, textarea").forEach(el => el.value = '');
+  
+  localStorage.removeItem(chave);
 
   renderizarCampos();
-  showToast("Todos os campos foram limpos!", "warning", 2500);
+  showToast("Campos do formulário atual foram limpos!", "warning", 2700);
 }
 
 
@@ -307,9 +301,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
 });
 
-
 tipoSelect.addEventListener('change', () => {
   salvarCampos();
-  restaurarCampos();       
-  renderizarCampos();   
+  renderizarCampos();
+  restaurarCampos();
 });

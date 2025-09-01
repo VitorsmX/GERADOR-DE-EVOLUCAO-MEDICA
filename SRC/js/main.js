@@ -160,7 +160,7 @@ function limparCampos() {
 
 
 function salvarAutomaticamente() {
-  setInterval(salvarCampos, 5000);
+  setInterval(salvarCampos, 1200);
 }
 
 function gerarTexto() {

@@ -27,7 +27,6 @@ body.loaded .spinner {
   display: none;
 }
 
-
 .container {
   max-width: 800px;
   margin: 40px auto;
@@ -43,17 +42,18 @@ body.loaded .spinner {
   padding: 10px;
   border-radius: 15px;
   transition: all ease-out 500ms;
-  &:hover {
-    scale: 1.01;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
+}
+.border-shadow:hover {
+  scale: 1.01;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .container-flex {
   display: flex;
   justify-content: center;
-  align-items: center;
-  column-gap: 15%;
+  align-items: flex-start;
+  gap: 15%;
+  margin-top: 20px;
 }
 
 .text-center {
@@ -62,14 +62,15 @@ body.loaded .spinner {
 
 @media (max-width: 760px) {
   .container-flex {
-    display: flex;
     flex-direction: column;
+    gap: 20px;
   }
 }
 
-h1, h2 {
+h1, h2, h3 {
   font-weight: 500;
   color: #333;
+  margin-top: 20px;
 }
 
 label {
@@ -83,11 +84,10 @@ label {
   box-shadow: 0 0 5px rgba(66, 133, 244, 0.7);
 }
 
-
 input, select, textarea, button {
   width: 100%;
   margin-top: 5px;
-  padding: 5px 2px 10px 2px;
+  padding: 8px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
@@ -95,18 +95,20 @@ input, select, textarea, button {
 }
 
 textarea {
-  height: 110px;
-  &::placeholder {
-    padding-left: 5px;
-    padding-top: 2px;
-  }
+  min-height: 110px;
+  resize: vertical;
+}
+
+textarea::placeholder {
+  padding-left: 5px;
+  padding-top: 2px;
 }
 
 .limpar-btn {
   background-color: #c21f1f;
-  &:hover {
-    background-color: #cc1616;
-  }
+}
+.limpar-btn:hover {
+  background-color: #a81818;
 }
 
 input:hover, select:hover, textarea:hover {
@@ -120,6 +122,8 @@ button {
   border: none;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
+  padding: 10px 15px;
+  border-radius: 6px;
 }
 
 button:hover {
@@ -135,6 +139,9 @@ button:active {
   height: 400px;
   margin-top: 15px;
   transition: box-shadow 0.2s ease;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
 }
 
 #editor:hover {
@@ -152,15 +159,13 @@ input:focus, select:focus, textarea:focus {
   flex-wrap: wrap;
   gap: 10px;
 }
+
 .section {
   margin-top: 30px;
 }
+
 .section h3 {
   margin-bottom: 10px;
-}
-button {
-  padding: 8px 12px;
-  cursor: pointer;
 }
 
 .grid-posologia {
@@ -168,11 +173,16 @@ button {
   grid-template-columns: 1fr 1fr;
   gap: 15px;
   margin-top: 10px;
+  padding: 10px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 8px;
 }
 
 .grid-posologia div {
   display: flex;
   flex-direction: column;
+  max-width: 70%;
 }
 
 @media (max-width: 600px) {
@@ -206,7 +216,7 @@ button {
 }
 
 .modal {
-  display: none; /* invisível por padrão */
+  display: none;
   position: fixed;
   top: 0; 
   left: 0;
@@ -225,6 +235,7 @@ button {
   transform: scale(0.8);
   opacity: 0;
   animation: zoomIn 0.4s ease-out forwards;
+  max-width: 400px;
 }
 
 .modal-content h3 {
@@ -248,7 +259,6 @@ button {
   }
 }
 
-/* Animações */
 @keyframes slideIn {
   to {
     opacity: 1;
@@ -285,7 +295,6 @@ button {
   pointer-events: none;
 }
 
-/* Spinner elegante */
 .spinner {
   border: 6px solid rgba(255,255,255,0.2);
   border-top: 6px solid #4285f4;
@@ -323,12 +332,6 @@ button {
   }
 }
 
-/* Skeletons específicos */
-.skeleton-text {
-  height: 16px;
-  margin: 6px 0;
-}
-
 .skeleton-title {
   height: 28px;
   width: 60%;
@@ -353,4 +356,3 @@ button {
   margin: 10px 5px 0 0;
   display: inline-block;
 }
-

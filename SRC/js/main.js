@@ -29,68 +29,67 @@ function renderizarCampos() {
   if (tipo === 'rapida') {
     camposDiv.innerHTML = `
       <h3>Resumo da Evolução</h3>
-      <label for="queixa">Queixa</label>
-      <textarea id="queixa" placeholder="Descreva a queixa do paciente..."></textarea>
+      <label for="queixa_rapida">Queixa</label>
+      <textarea id="queixa_rapida" placeholder="Descreva a queixa do paciente..."></textarea>
 
-      <label for="conduta">Conduta</label>
-      <textarea id="conduta" placeholder="Conduta médica a ser adotada..."></textarea>
+      <label for="conduta_rapida">Conduta</label>
+      <textarea id="conduta_rapida" placeholder="Conduta médica a ser adotada..."></textarea>
     `;
   } else {
     camposDiv.innerHTML = `
       <h3>Dados Clínicos</h3>
-      <label for="queixa">Queixa Principal</label>
-      <textarea id="queixa" placeholder="Descreva a queixa principal..."></textarea>
+      <label for="queixa_completa">Queixa Principal</label>
+      <textarea id="queixa_completa" placeholder="Descreva a queixa principal..."></textarea>
 
-      <label for="exame">Exame Físico</label>
-      <textarea id="exame" placeholder="Detalhes do exame físico..."></textarea>
+      <label for="exame_completa">Exame Físico</label>
+      <textarea id="exame_completa" placeholder="Detalhes do exame físico..."></textarea>
 
-      <label for="diagnostico">Diagnóstico</label>
-      <textarea id="diagnostico" placeholder="Hipótese diagnóstica..."></textarea>
+      <label for="diagnostico_completa">Diagnóstico</label>
+      <textarea id="diagnostico_completa" placeholder="Hipótese diagnóstica..."></textarea>
 
       <h3>Tratamento</h3>
-      <label for="prescricao">Prescrição</label>
-      <textarea id="prescricao" placeholder="Prescrição médica..."></textarea>
+      <label for="prescricao_completa">Prescrição</label>
+      <textarea id="prescricao_completa" placeholder="Prescrição médica..."></textarea>
 
       <h3>Posologia Detalhada</h3>
       <div class="grid-posologia">
         <div>
-          <label for="medicamento">Medicamento</label>
-          <input type="text" id="medicamento" placeholder="Nome do medicamento">
+          <label for="medicamento_completa">Medicamento</label>
+          <input type="text" id="medicamento_completa" placeholder="Nome do medicamento">
         </div>
 
         <div>
-          <label for="dosagem">Dosagem</label>
-          <input type="text" id="dosagem" placeholder="Ex: 500mg">
+          <label for="dosagem_completa">Dosagem</label>
+          <input type="text" id="dosagem_completa" placeholder="Ex: 500mg">
         </div>
 
         <div>
-          <label for="frequencia">Frequência</label>
-          <input type="text" id="frequencia" placeholder="Ex: 2x ao dia">
+          <label for="frequencia_completa">Frequência</label>
+          <input type="text" id="frequencia_completa" placeholder="Ex: 2x ao dia">
         </div>
 
         <div>
-          <label for="via">Via de Administração</label>
-          <input type="text" id="via" placeholder="Ex: Oral, EV...">
+          <label for="via_completa">Via de Administração</label>
+          <input type="text" id="via_completa" placeholder="Ex: Oral, EV...">
         </div>
 
         <div>
-          <label for="duracao">Duração</label>
-          <input type="text" id="duracao" placeholder="Ex: 7 dias">
+          <label for="duracao_completa">Duração</label>
+          <input type="text" id="duracao_completa" placeholder="Ex: 7 dias">
         </div>
       </div>
 
       <h3>Complementos</h3>
-      <label for="observacoes">Observações</label>
-      <textarea id="observacoes" placeholder="Observações adicionais..."></textarea>
+      <label for="observacoes_completa">Observações</label>
+      <textarea id="observacoes_completa" placeholder="Observações adicionais..."></textarea>
 
-      <label for="orientacoes">Orientações</label>
-      <textarea id="orientacoes" placeholder="Orientações ao paciente..."></textarea>
+      <label for="orientacoes_completa">Orientações</label>
+      <textarea id="orientacoes_completa" placeholder="Orientações ao paciente..."></textarea>
     `;
   }
 
   restaurarCampos();
 }
-
 
 function salvarCampos() {
   const tipo = tipoSelect.value;
@@ -151,16 +150,15 @@ function limparCampos() {
 
   nomeInput.value = '';
   camposDiv.querySelectorAll("input, textarea").forEach(el => el.value = '');
-  
+
   localStorage.removeItem(chave);
 
   renderizarCampos();
-  showToast("Campos do formulário atual foram limpos!", "warning", 2700);
+  showToast("Campos do formulário atual foram limpos!", "warning", 2500);
 }
 
-
 function salvarAutomaticamente() {
-  setInterval(salvarCampos, 1200);
+  setInterval(salvarCampos, 2000);
 }
 
 function gerarTexto() {
@@ -170,25 +168,25 @@ function gerarTexto() {
   if (tipo === 'rapida') {
     texto = `=== Evolução Rápida ===\n
 📌 Resumo
-- Queixa: ${document.getElementById('queixa').value || '-'}
-- Conduta: ${document.getElementById('conduta').value || '-'}`;
+- Queixa: ${document.getElementById('queixa_rapida').value || '-'}
+- Conduta: ${document.getElementById('conduta_rapida').value || '-'}`;
   } else {
     texto = `=== Evolução Completa ===\n
 📌 Dados Clínicos
-- Queixa Principal: ${document.getElementById('queixa').value || '-'}
-- Exame Físico: ${document.getElementById('exame').value || '-'}
-- Diagnóstico: ${document.getElementById('diagnostico').value || '-'}\n
+- Queixa Principal: ${document.getElementById('queixa_completa').value || '-'}
+- Exame Físico: ${document.getElementById('exame_completa').value || '-'}
+- Diagnóstico: ${document.getElementById('diagnostico_completa').value || '-'}\n
 💊 Tratamento
-- Prescrição: ${document.getElementById('prescricao').value || '-'}\n
+- Prescrição: ${document.getElementById('prescricao_completa').value || '-'}\n
 🧾 Posologia Detalhada
-- Medicamento: ${document.getElementById('medicamento').value || '-'}
-- Dosagem: ${document.getElementById('dosagem').value || '-'}
-- Frequência: ${document.getElementById('frequencia').value || '-'}
-- Via: ${document.getElementById('via').value || '-'}
-- Duração: ${document.getElementById('duracao').value || '-'}\n
+- Medicamento: ${document.getElementById('medicamento_completa').value || '-'}
+- Dosagem: ${document.getElementById('dosagem_completa').value || '-'}
+- Frequência: ${document.getElementById('frequencia_completa').value || '-'}
+- Via: ${document.getElementById('via_completa').value || '-'}
+- Duração: ${document.getElementById('duracao_completa').value || '-'}\n
 📝 Complementos
-- Observações: ${document.getElementById('observacoes').value || '-'}
-- Orientações: ${document.getElementById('orientacoes').value || '-'}`;
+- Observações: ${document.getElementById('observacoes_completa').value || '-'}
+- Orientações: ${document.getElementById('orientacoes_completa').value || '-'}`;
   }
 
   quill.setText(texto);
@@ -198,9 +196,7 @@ function gerarTexto() {
 
     if (quill && quill.root) {
       quill.focus();
-  
       quill.root.scrollIntoView({ behavior: "smooth", block: "center" });
-  
       quill.root.classList.add("focused");
       setTimeout(() => quill.root.classList.remove("focused"), 2500);
     }
@@ -298,7 +294,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("skeleton-overlay").style.display = "none"; 
     document.querySelector(".page-content").style.display = "block"; 
   });
-  
 });
 
 tipoSelect.addEventListener('change', () => {

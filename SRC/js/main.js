@@ -166,13 +166,7 @@ function limparCampos() {
 
 
 function salvarAutomaticamente() {
-  document.addEventListener("input", (e) => {
-    if (e.target.matches("input, textarea, select")) {
-      salvarCampos();
-    }
-  });
-
-  setInterval(salvarCampos, 20000);
+  setInterval(salvarCampos, 5000);
 }
 
 function gerarTexto() {

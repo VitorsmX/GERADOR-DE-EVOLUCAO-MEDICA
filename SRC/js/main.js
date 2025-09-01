@@ -55,7 +55,8 @@ function renderizarCampos() {
       <div class="grid-posologia">
         <div>
           <label for="medicamento_completa">Medicamento</label>
-          <input type="text" id="medicamento_completa" placeholder="Nome do medicamento">
+          <input type="text" id="medicamento_completa" placeholder="Nome do medicamento" autocomplete="off">
+          <div id="sugestoes" class="sugestoes-lista"></div>
         </div>
 
         <div>
@@ -296,6 +297,90 @@ function exportarTexto() {
 
   showToast("Arquivo TXT exportado com sucesso!", "success");
 }
+
+let medicamentos = [];
+
+// Carregar CSV automaticamente
+async function carregarMedicamentos() {
+  try {
+    const response = await fetch("./archives/DADOS_ABERTOS_MEDICAMENTOS.csv"); // arquivo na pasta
+    const csvText = await response.text();
+
+    medicamentos = csvText
+      .split("\n")
+      .slice(1) // pular cabeçalho
+      .map((linha) => linha.split(";")[0].trim()) // assume que a 1ª coluna é o nome
+      .filter((nome) => nome.length > 0);
+
+    medicamentos = [...new Set(medicamentos)]; // remover duplicados
+    console.log("Medicamentos carregados:", medicamentos.length);
+  } catch (err) {
+    console.error("Erro ao carregar medicamentos:", err);
+  }
+}
+
+// Função debounce (melhora performance)
+function debounce(fn, delay = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+// Autocomplete
+function configurarBuscaMedicamento() {
+  const input = document.getElementById("medicamento_completa");
+  const sugestoesDiv = document.getElementById("sugestoes");
+
+  input.addEventListener(
+    "input",
+    debounce(() => {
+      const termo = input.value.toLowerCase().trim();
+      sugestoesDiv.innerHTML = "";
+
+      if (termo.length < 2) return; // só busca a partir de 2 letras
+
+      const resultados = medicamentos
+        .filter((m) => m.toLowerCase().includes(termo))
+        .slice(0, 10); // limitar a 10 sugestões
+
+      if (resultados.length === 0) {
+        const livre = document.createElement("div");
+        livre.textContent = `Usar "${input.value}"`;
+        livre.className = "sugestao-item";
+        livre.onclick = () => {
+          sugestoesDiv.innerHTML = "";
+        };
+        sugestoesDiv.appendChild(livre);
+      } else {
+        resultados.forEach((med) => {
+          const div = document.createElement("div");
+          div.textContent = med;
+          div.className = "sugestao-item";
+          div.onclick = () => {
+            input.value = med;
+            sugestoesDiv.innerHTML = "";
+          };
+          sugestoesDiv.appendChild(div);
+        });
+      }
+    }, 250)
+  );
+
+  // Fechar dropdown ao clicar fora
+  document.addEventListener("click", (e) => {
+    if (!sugestoesDiv.contains(e.target) && e.target !== input) {
+      sugestoesDiv.innerHTML = "";
+    }
+  });
+}
+
+// Inicializar
+document.addEventListener("DOMContentLoaded", async () => {
+  await carregarMedicamentos();
+  configurarBuscaMedicamento();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   quill = new Quill("#editor", { theme: "snow" });

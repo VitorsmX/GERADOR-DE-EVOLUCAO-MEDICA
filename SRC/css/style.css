@@ -73,6 +73,25 @@ body.loaded .spinner {
   }
 }
 
+.sugestoes-lista {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 250px;
+  z-index: 1000;
+}
+.sugestao-item {
+  padding: 8px;
+  cursor: pointer;
+}
+.sugestao-item:hover {
+  background: #f0f0f0;
+}
+
+
+
 h1, h2, h3 {
   font-weight: 500;
   color: #333;

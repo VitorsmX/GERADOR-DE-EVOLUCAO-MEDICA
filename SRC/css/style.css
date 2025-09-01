@@ -85,7 +85,7 @@ label {
 }
 
 input, select, textarea, button {
-  width: 100%;
+  width: 90%;
   margin-top: 5px;
   padding: 8px 10px;
   border: 1px solid #ccc;

@@ -73,13 +73,19 @@ body.loaded .spinner {
   }
 }
 
-.sugestoes-lista {
-  position: absolute;
-  background: white;
-  border: 1px solid #ddd;
+#medicamento_completa {
+  width: 300px;
+  padding: 8px;
+  font-size: 14px;
+}
+#sugestoes {
+  margin-top: 72px;
+  border: 1px solid #ccc;
   max-height: 200px;
   overflow-y: auto;
-  width: 250px;
+  width: 300px;
+  position: absolute;
+  background: #fff;
   z-index: 1000;
 }
 .sugestao-item {

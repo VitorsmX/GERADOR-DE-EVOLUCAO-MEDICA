@@ -87,10 +87,13 @@ function renderizarCampos() {
       <label for="orientacoes_completa">Orientações</label>
       <textarea id="orientacoes_completa" placeholder="Orientações ao paciente..."></textarea>
     `;
+
+    configurarBuscaMedicamento();
   }
 
   restaurarCampos();
 }
+
 
 function salvarCampos() {
   const tipo = tipoSelect.value;
@@ -298,28 +301,61 @@ function exportarTexto() {
   showToast("Arquivo TXT exportado com sucesso!", "success");
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  quill = new Quill("#editor", { theme: "snow" });
+  renderizarCampos();
+  salvarAutomaticamente();
+
+  window.onload = () => {
+    const loader = document.getElementById("loading-overlay");
+    if (loader) {
+      loader.classList.add("fade-out");
+      setTimeout(() => loader.remove(), 700);
+    }
+  };
+
+  window.addEventListener("load", () => {
+    document.getElementById("skeleton-overlay").style.display = "none";
+    document.querySelector(".page-content").style.display = "block";
+  });
+});
+
+tipoSelect.addEventListener("change", () => {
+  salvarCampos();
+  renderizarCampos();
+  restaurarCampos();
+});
+
 let medicamentos = [];
 
-// Carregar CSV automaticamente
 async function carregarMedicamentos() {
   try {
-    const response = await fetch("./archives/DADOS_ABERTOS_MEDICAMENTOS.csv"); // arquivo na pasta
-    const csvText = await response.text();
+    Papa.parse(
+      "https://raw.githubusercontent.com/VitorsmX/GERADOR-DE-EVOLUCAO-MEDICA/master/SRC/archives/DADOS_ABERTOS_MEDICAMENTOS.csv",
+      {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          // supondo que o cabeçalho seja "NOME_PRODUTO"
+          medicamentos = results.data
+            .map((row) => row.NOME_PRODUTO?.trim())
+            .filter((nome) => nome && nome.length > 0);
 
-    medicamentos = csvText
-      .split("\n")
-      .slice(1) // pular cabeçalho
-      .map((linha) => linha.split(";")[0].trim()) // assume que a 1ª coluna é o nome
-      .filter((nome) => nome.length > 0);
+          medicamentos = [...new Set(medicamentos)];
 
-    medicamentos = [...new Set(medicamentos)]; // remover duplicados
-    console.log("Medicamentos carregados:", medicamentos.length);
+          console.log("Medicamentos carregados:", medicamentos.length);
+        },
+        error: function (err) {
+          console.error("Erro ao carregar CSV:", err);
+        },
+      }
+    );
   } catch (err) {
-    console.error("Erro ao carregar medicamentos:", err);
+    console.error("Erro inesperado ao carregar medicamentos:", err);
   }
 }
 
-// Função debounce (melhora performance)
 function debounce(fn, delay = 300) {
   let timer;
   return (...args) => {
@@ -328,7 +364,6 @@ function debounce(fn, delay = 300) {
   };
 }
 
-// Autocomplete
 function configurarBuscaMedicamento() {
   const input = document.getElementById("medicamento_completa");
   const sugestoesDiv = document.getElementById("sugestoes");
@@ -339,11 +374,11 @@ function configurarBuscaMedicamento() {
       const termo = input.value.toLowerCase().trim();
       sugestoesDiv.innerHTML = "";
 
-      if (termo.length < 2) return; // só busca a partir de 2 letras
+      if (termo.length < 2) return;
 
       const resultados = medicamentos
         .filter((m) => m.toLowerCase().includes(termo))
-        .slice(0, 10); // limitar a 10 sugestões
+        .slice(0, 10);
 
       if (resultados.length === 0) {
         const livre = document.createElement("div");
@@ -368,7 +403,6 @@ function configurarBuscaMedicamento() {
     }, 250)
   );
 
-  // Fechar dropdown ao clicar fora
   document.addEventListener("click", (e) => {
     if (!sugestoesDiv.contains(e.target) && e.target !== input) {
       sugestoesDiv.innerHTML = "";
@@ -376,33 +410,6 @@ function configurarBuscaMedicamento() {
   });
 }
 
-// Inicializar
 document.addEventListener("DOMContentLoaded", async () => {
   await carregarMedicamentos();
-  configurarBuscaMedicamento();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  quill = new Quill("#editor", { theme: "snow" });
-  renderizarCampos();
-  salvarAutomaticamente();
-
-  window.onload = () => {
-    const loader = document.getElementById("loading-overlay");
-    if (loader) {
-      loader.classList.add("fade-out");
-      setTimeout(() => loader.remove(), 700);
-    }
-  };
-
-  window.addEventListener("load", () => {
-    document.getElementById("skeleton-overlay").style.display = "none";
-    document.querySelector(".page-content").style.display = "block";
-  });
-});
-
-tipoSelect.addEventListener("change", () => {
-  salvarCampos();
-  renderizarCampos();
-  restaurarCampos();
 });

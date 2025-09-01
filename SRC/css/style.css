@@ -88,6 +88,10 @@ h3 {
   text-underline-offset: 3px;
 }
 
+input, textarea {
+  cursor: url(../js/custom-cursor.cur), auto;
+}
+
 label {
   display: block;
   margin-top: 15px;

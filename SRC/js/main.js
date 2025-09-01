@@ -1,6 +1,6 @@
-const camposDiv = document.getElementById('campos');
-const tipoSelect = document.getElementById('tipo');
-const nomeInput = document.getElementById('nome');
+const camposDiv = document.getElementById("campos");
+const tipoSelect = document.getElementById("tipo");
+const nomeInput = document.getElementById("nome");
 let quill;
 
 function showToast(message, type = "info", showTimeMS = 2500) {
@@ -24,9 +24,9 @@ function showToast(message, type = "info", showTimeMS = 2500) {
 
 function renderizarCampos() {
   const tipo = tipoSelect.value;
-  camposDiv.innerHTML = '';
+  camposDiv.innerHTML = "";
 
-  if (tipo === 'rapida') {
+  if (tipo === "rapida") {
     camposDiv.innerHTML = `
       <h3>Resumo da Evolução</h3>
       <label for="queixa_rapida">Queixa</label>
@@ -93,11 +93,11 @@ function renderizarCampos() {
 
 function salvarCampos() {
   const tipo = tipoSelect.value;
-  const chave = tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta';
+  const chave = tipo === "rapida" ? "evolucaoRapida" : "evolucaoCompleta";
 
   const dados = { nome: nomeInput.value.trim() };
 
-  camposDiv.querySelectorAll("input, textarea").forEach(el => {
+  camposDiv.querySelectorAll("input, textarea").forEach((el) => {
     dados[el.id] = el.value;
   });
 
@@ -106,19 +106,21 @@ function salvarCampos() {
 
 function restaurarCampos() {
   const tipo = tipoSelect.value;
-  const chave = tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta';
+  const chave = tipo === "rapida" ? "evolucaoRapida" : "evolucaoCompleta";
   const dadosSalvos = JSON.parse(localStorage.getItem(chave));
 
-  nomeInput.value = '';
-  camposDiv.querySelectorAll("input, textarea").forEach(el => el.value = '');
+  nomeInput.value = "";
+  camposDiv
+    .querySelectorAll("input, textarea")
+    .forEach((el) => (el.value = ""));
 
   if (dadosSalvos) {
-    nomeInput.value = dadosSalvos.nome || '';
+    nomeInput.value = dadosSalvos.nome || "";
 
     for (const [id, valor] of Object.entries(dadosSalvos)) {
       if (id !== "nome") {
         const el = document.getElementById(id);
-        if (el) el.value = valor || '';
+        if (el) el.value = valor || "";
       }
     }
   }
@@ -146,10 +148,12 @@ function mostrarConfirmModal() {
 
 function limparCampos() {
   const tipo = tipoSelect.value;
-  const chave = tipo === 'rapida' ? 'evolucaoRapida' : 'evolucaoCompleta';
+  const chave = tipo === "rapida" ? "evolucaoRapida" : "evolucaoCompleta";
 
-  nomeInput.value = '';
-  camposDiv.querySelectorAll("input, textarea").forEach(el => el.value = '');
+  nomeInput.value = "";
+  camposDiv
+    .querySelectorAll("input, textarea")
+    .forEach((el) => (el.value = ""));
 
   localStorage.removeItem(chave);
 
@@ -163,30 +167,30 @@ function salvarAutomaticamente() {
 
 function gerarTexto() {
   const tipo = tipoSelect.value;
-  let texto = '';
+  let texto = "";
 
-  if (tipo === 'rapida') {
+  if (tipo === "rapida") {
     texto = `=== Evolução Rápida ===\n
 📌 Resumo
-- Queixa: ${document.getElementById('queixa_rapida').value || '-'}
-- Conduta: ${document.getElementById('conduta_rapida').value || '-'}`;
+- Queixa: ${document.getElementById("queixa_rapida").value || "-"}
+- Conduta: ${document.getElementById("conduta_rapida").value || "-"}`;
   } else {
     texto = `=== Evolução Completa ===\n
 📌 Dados Clínicos
-- Queixa Principal: ${document.getElementById('queixa_completa').value || '-'}
-- Exame Físico: ${document.getElementById('exame_completa').value || '-'}
-- Diagnóstico: ${document.getElementById('diagnostico_completa').value || '-'}\n
+- Queixa Principal: ${document.getElementById("queixa_completa").value || "-"}
+- Exame Físico: ${document.getElementById("exame_completa").value || "-"}
+- Diagnóstico: ${document.getElementById("diagnostico_completa").value || "-"}\n
 💊 Tratamento
-- Prescrição: ${document.getElementById('prescricao_completa').value || '-'}\n
+- Prescrição: ${document.getElementById("prescricao_completa").value || "-"}\n
 🧾 Posologia Detalhada
-- Medicamento: ${document.getElementById('medicamento_completa').value || '-'}
-- Dosagem: ${document.getElementById('dosagem_completa').value || '-'}
-- Frequência: ${document.getElementById('frequencia_completa').value || '-'}
-- Via: ${document.getElementById('via_completa').value || '-'}
-- Duração: ${document.getElementById('duracao_completa').value || '-'}\n
+- Medicamento: ${document.getElementById("medicamento_completa").value || "-"}
+- Dosagem: ${document.getElementById("dosagem_completa").value || "-"}
+- Frequência: ${document.getElementById("frequencia_completa").value || "-"}
+- Via: ${document.getElementById("via_completa").value || "-"}
+- Duração: ${document.getElementById("duracao_completa").value || "-"}\n
 📝 Complementos
-- Observações: ${document.getElementById('observacoes_completa').value || '-'}
-- Orientações: ${document.getElementById('orientacoes_completa').value || '-'}`;
+- Observações: ${document.getElementById("observacoes_completa").value || "-"}
+- Orientações: ${document.getElementById("orientacoes_completa").value || "-"}`;
   }
 
   quill.setText(texto);
@@ -204,11 +208,14 @@ function gerarTexto() {
 }
 
 function copiarTexto() {
-  navigator.clipboard.writeText(quill.getText()).then(() => {
-    showToast("Texto copiado para a área de transferência!", "success");
-  }).catch(() => {
-    showToast("Erro ao copiar o texto!", "error");
-  });
+  navigator.clipboard
+    .writeText(quill.getText())
+    .then(() => {
+      showToast("Texto copiado para a área de transferência!", "success");
+    })
+    .catch(() => {
+      showToast("Erro ao copiar o texto!", "error");
+    });
 }
 
 function copiarTextoMarkdown() {
@@ -216,11 +223,14 @@ function copiarTextoMarkdown() {
   const turndownService = new TurndownService();
   const textoMarkdown = turndownService.turndown(textoHtml);
 
-  navigator.clipboard.writeText(textoMarkdown).then(() => {
-    showToast("Texto copiado em Markdown!", "success");
-  }).catch(() => {
-    showToast("Erro ao copiar o texto!", "error");
-  });
+  navigator.clipboard
+    .writeText(textoMarkdown)
+    .then(() => {
+      showToast("Texto copiado em Markdown!", "success");
+    })
+    .catch(() => {
+      showToast("Erro ao copiar o texto!", "error");
+    });
 }
 
 function exportarPDF() {
@@ -248,7 +258,12 @@ function exportarPDF() {
   doc.text(titulo, 105, 20, { align: "center" });
 
   doc.setFontSize(10);
-  doc.text(`Data de geração: ${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`, 105, 28, { align: "center" });
+  doc.text(
+    `Data de geração: ${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`,
+    105,
+    28,
+    { align: "center" }
+  );
 
   doc.setFontSize(12);
   const marginLeft = 15;
@@ -265,10 +280,15 @@ function exportarPDF() {
 function exportarTexto() {
   const nome = nomeInput.value.trim() || "paciente-nao-nomeado";
   const agora = new Date();
-  const dataHora = agora.toLocaleString('pt-BR').replace(/[\/:]/g, '').replace(' ', '-');
-  const nomeArquivo = `${nome.replace(/\s+/g, '-')}-${dataHora}.txt`;
+  const dataHora = agora
+    .toLocaleString("pt-BR")
+    .replace(/[\/:]/g, "")
+    .replace(" ", "-");
+  const nomeArquivo = `${nome.replace(/\s+/g, "-")}-${dataHora}.txt`;
 
-  const blob = new Blob([quill.getText()], { type: "text/plain;charset=utf-8" });
+  const blob = new Blob([quill.getText()], {
+    type: "text/plain;charset=utf-8",
+  });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
   link.download = nomeArquivo;
@@ -278,7 +298,7 @@ function exportarTexto() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  quill = new Quill('#editor', { theme: 'snow' });
+  quill = new Quill("#editor", { theme: "snow" });
   renderizarCampos();
   salvarAutomaticamente();
 
@@ -291,12 +311,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.addEventListener("load", () => {
-    document.getElementById("skeleton-overlay").style.display = "none"; 
-    document.querySelector(".page-content").style.display = "block"; 
+    document.getElementById("skeleton-overlay").style.display = "none";
+    document.querySelector(".page-content").style.display = "block";
   });
 });
 
-tipoSelect.addEventListener('change', () => {
+tipoSelect.addEventListener("change", () => {
   salvarCampos();
   renderizarCampos();
   restaurarCampos();
